@@ -14,7 +14,7 @@ public class Feed {
 	final String language;
 	final String copyright;
 	final String pubDate;
-	public int index;
+	private int index;
 
 	final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
@@ -25,6 +25,7 @@ public class Feed {
 		this.language = language;
 		this.copyright = copyright;
 		this.pubDate = pubDate;
+		this.index = Integer.MAX_VALUE;
 	}
 
 	public List<FeedMessage> getMessages() {

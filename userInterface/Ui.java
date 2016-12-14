@@ -59,33 +59,20 @@ public class Ui extends JFrame {
 
 		int count = 0;
 
-		rssFeedList.forEach((key, value) -> {
-			panel.add(new JButton(value.getTitle()), count);
-			((JButton) panel.getComponent(count)).setText(value.getTitle());
-			((JButton) panel.getComponent(count)).setToolTipText(value.getDescription());
+		rssFeedList.forEach((string, feed) -> {
+			panel.add(new JButton(feed.getTitle()), count);
+			((JButton) panel.getComponent(count)).setText(feed.getTitle());
+			((JButton) panel.getComponent(count)).setToolTipText(feed.getDescription());
 			((JButton) panel.getComponent(count)).addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (checkExistence(pane, value.getTitle()) == false)
-						pane.add(value.getTitle(), addRssFeedTab(key));
+					if (feed.getIndex() == Integer.MAX_VALUE) {
+						pane.add(feed.getTitle(), addRssFeedTab(string));
+						feed.setIndex(count); 
+					}
 				}
 			});
 		});
 		return panel;
-	}
-
-	// check existence of a tab in the pane by comparing the components
-	// name(feed title) with the feed-title
-	public boolean checkExistence(JTabbedPane pane, String title) {
-
-		for (Component comp : pane.getComponents()) {
-
-			// cast the component into a JPanel and check if its null, compare
-			// titles if not
-			if (((JPanel) comp).getName() != null && ((JPanel) comp).getName().equals(title)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	// create the rss feed Tab
