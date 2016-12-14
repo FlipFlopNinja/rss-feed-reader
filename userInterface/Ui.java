@@ -22,10 +22,9 @@ public class Ui extends JFrame {
 		this.setTitle("RSS News Feed Reader");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(new Dimension(750, 600));
-		this.setLayout(new GridLayout(1, 1));
 
 		// add the tabbedPane including the overviewTab
-		this.overviewTab.setLayout(new FlowLayout());
+		this.overviewTab.setLayout(new GridLayout(0,2));
 		this.tabbedPane.addTab("Overview", this.overviewTab);
 		this.add(this.tabbedPane);
 
@@ -83,8 +82,10 @@ public class Ui extends JFrame {
 	// AddNewFeedTextboxAndButton
 	public void AddNewFeedTextboxAndButton(RSSFeedList rssFeedList) {
 		JTextField inputUri = new JTextField(10);
+		inputUri.setToolTipText("Enter RSS Feed URI");
 		this.overviewTab.add(inputUri);
 		JButton inputUriButton = new JButton("add Feed");
+		inputUriButton.setToolTipText("Add the provided RSS Feed");
 		inputUriButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rssFeedList.addFeed(inputUri.getText());
@@ -100,7 +101,7 @@ public class Ui extends JFrame {
 
 		// create feed, panel and hashmap
 		JPanel tempPanel = new JPanel();
-		tempPanel.setLayout(new GridLayout(0, 1));
+		tempPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 8));
 
 		Feed tempfeed = new RSSFeedParser(uri).readFeed();
 		HashMap<JLabel, FeedMessage> msgLabel = new HashMap<JLabel, FeedMessage>();
