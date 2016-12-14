@@ -14,7 +14,8 @@ public class Feed {
 	final String language;
 	final String copyright;
 	final String pubDate;
-	private int index;
+	private int buttonIndex;
+	private int tabIndex;
 
 	final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
@@ -25,7 +26,8 @@ public class Feed {
 		this.language = language;
 		this.copyright = copyright;
 		this.pubDate = pubDate;
-		this.index = Integer.MAX_VALUE;
+		this.buttonIndex = Integer.MAX_VALUE;
+		this.tabIndex = Integer.MAX_VALUE;
 	}
 
 	public List<FeedMessage> getMessages() {
@@ -56,13 +58,21 @@ public class Feed {
 		return pubDate;
 	}
 	
-	public int getIndex() {
-		return this.index;
+	public int getButtonIndex() {
+		return this.buttonIndex;
 	}
 	
-	public void setIndex(int index) {
-		this.index = index;
+	public void setButtonIndex(int buttonIndex) {
+		this.buttonIndex = buttonIndex;
 	} 
+	
+	public int getTabIndex() {
+		return this.tabIndex;
+	}
+	
+	public void setTabIndex(int tabIndex) {
+		this.tabIndex = tabIndex;
+	}
 
 	@Override
 	public String toString() {

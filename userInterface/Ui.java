@@ -13,10 +13,11 @@ import rSS.*;
 @SuppressWarnings("serial")
 public class Ui extends JFrame {
 
-	HashMap<String, Feed> rssFeedList;
-
+	private JTabbedPane tabbedPane = new JTabbedPane();
+	private JPanel overviewTab = new JPanel();
+	
 	public Ui() {
-
+		
 		// default settings for the new JFrame
 		this.setTitle("RSS News Feed Reader");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -24,19 +25,20 @@ public class Ui extends JFrame {
 		this.setLayout(new GridLayout(1, 1));
 
 		// add the tabbedPane including the overviewTab
-		JTabbedPane tabbedPane = new JTabbedPane();
-		JPanel overviewTab = new JPanel();
-		tabbedPane.addTab("Overview", overviewTab);
-		this.add(tabbedPane);
+		this.overviewTab.setLayout(new FlowLayout());
+		this.tabbedPane.addTab("Overview", this.overviewTab);
+		this.add(this.tabbedPane);
 
 		// create RSSFeedList
 		// TODO: implement settings tab in GUI to make uris editable
+		// http://www.faz.net/rss/aktuell/finanzen/
 		RSSFeedList rssFeedList = new RSSFeedList();
 		rssFeedList.addFeed("http://www.faz.net/rss/aktuell/");
 		rssFeedList.addFeed("http://www.spiegel.de/schlagzeilen/tops/index.rss");
 
 		// add a button for each feed in rssFeedList
-		overviewTab = AddFeedButtons(tabbedPane, overviewTab, rssFeedList);
+		AddNewFeedTextboxAndButton(rssFeedList);
+		AddFeedButtons(rssFeedList);
 
 		// draw UI
 		this.setVisible(true);
@@ -55,26 +57,44 @@ public class Ui extends JFrame {
 	}
 
 	// METHOD: add a button for each feed in rssFeedList
-	private JPanel AddFeedButtons(JTabbedPane pane, JPanel panel, RSSFeedList rssFeedList) {
+	private void AddFeedButtons(RSSFeedList rssFeedList) {
 
-		int count = 0;
-
+		int panelcount = this.overviewTab.getComponentCount();
+		JTabbedPane pane = this.tabbedPane;
 		rssFeedList.forEach((string, feed) -> {
-			panel.add(new JButton(feed.getTitle()), count);
-			((JButton) panel.getComponent(count)).setText(feed.getTitle());
-			((JButton) panel.getComponent(count)).setToolTipText(feed.getDescription());
-			((JButton) panel.getComponent(count)).addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (feed.getIndex() == Integer.MAX_VALUE) {
-						pane.add(feed.getTitle(), addRssFeedTab(string));
-						feed.setIndex(count); 
+			if(feed.getButtonIndex() == Integer.MAX_VALUE) {
+				feed.setButtonIndex(panelcount); 
+				this.overviewTab.add(new JButton(feed.getTitle()), panelcount);
+				((JButton) this.overviewTab.getComponent(panelcount)).setText(feed.getTitle());
+				((JButton) this.overviewTab.getComponent(panelcount)).setToolTipText(feed.getDescription());
+				((JButton) this.overviewTab.getComponent(panelcount)).addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// TODO: implement correct tabindex handling
+						if (feed.getTabIndex() == Integer.MAX_VALUE) {
+							pane.add(feed.getTitle(), addRssFeedTab(string));
+							feed.setTabIndex(panelcount);
+						}
 					}
-				}
-			});
+				});
+			}
 		});
-		return panel;
 	}
 
+	// AddNewFeedTextboxAndButton
+	public void AddNewFeedTextboxAndButton(RSSFeedList rssFeedList) {
+		JTextField inputUri = new JTextField(10);
+		this.overviewTab.add(inputUri);
+		JButton inputUriButton = new JButton("add Feed");
+		inputUriButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rssFeedList.addFeed(inputUri.getText());
+				AddFeedButtons(rssFeedList);
+				refresh();
+			}
+		});
+		this.overviewTab.add(inputUriButton);
+	}
+	
 	// create the rss feed Tab
 	public JPanel addRssFeedTab(String uri) {
 

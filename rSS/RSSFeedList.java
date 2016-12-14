@@ -28,16 +28,20 @@ public class RSSFeedList extends HashMap<String, Feed> {
 
 	// methods
 	public void addFeed(String uri) {
-		RSSFeedParser parser = new RSSFeedParser(uri);
-		Feed tempFeed = parser.readFeed();
-		this.put(uri, tempFeed);
+		if (!this.containsKey(uri)) {
+			RSSFeedParser parser = new RSSFeedParser(uri);
+			Feed tempFeed = parser.readFeed();
+			this.put(uri, tempFeed);
+		}
 	}
 
 	public void addFeedList(List<String> uriList) {
 		uriList.forEach((uri) -> {
-			RSSFeedParser parser = new RSSFeedParser(uri);
-			Feed tempFeed = parser.readFeed();
-			this.put(uri, tempFeed);
+			if (!this.containsKey(uri)) {
+				RSSFeedParser parser = new RSSFeedParser(uri);
+				Feed tempFeed = parser.readFeed();
+				this.put(uri, tempFeed);
+			}
 		});
 	}
 
