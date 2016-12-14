@@ -3,6 +3,8 @@ package rSS;
 import java.util.HashMap;
 import java.util.List;
 
+import dataIO.URIList;
+
 @SuppressWarnings("serial")
 public class RSSFeedList extends HashMap<String, Feed> {
 
@@ -14,6 +16,13 @@ public class RSSFeedList extends HashMap<String, Feed> {
 			RSSFeedParser parser = new RSSFeedParser(uri.toString());
 			Feed tempFeed = parser.readFeed();
 			this.put(uri, tempFeed);
+		});
+	}
+	
+	public RSSFeedList(String fileName) {
+		URIList uriList = new URIList(fileName);
+		uriList.getURIList().forEach((uri) -> {
+			this.addFeed(uri);
 		});
 	}
 
