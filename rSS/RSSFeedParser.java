@@ -40,7 +40,7 @@ public class RSSFeedParser {
 		Feed feed = null;
 		try {
 			boolean isFeedHeader = true;
-			// Set header values intial to the empty string
+			// Set header values initial to the empty string
 			String description = "";
 			String title = "";
 			String link = "";
@@ -50,9 +50,9 @@ public class RSSFeedParser {
 			String pubdate = "";
 			String guid = "";
 
-			// First create a new XMLInputFactory
+			// first create a new XMLInputFactory
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-			// Setup a new eventReader
+			// setup a new eventReader
 			InputStream in = read();
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 			// read the XML document

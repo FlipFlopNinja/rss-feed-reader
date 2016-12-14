@@ -14,6 +14,7 @@ public class Feed {
 	final String language;
 	final String copyright;
 	final String pubDate;
+	public int index;
 
 	final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
@@ -53,6 +54,14 @@ public class Feed {
 	public String getPubDate() {
 		return pubDate;
 	}
+	
+	public int getIndex() {
+		return this.index;
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
+	} 
 
 	@Override
 	public String toString() {
