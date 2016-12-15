@@ -7,6 +7,7 @@ public class FeedMessage {
 	String link;
 	String author;
 	String guid;
+	String pubDate;
 
 	public String getTitle() {
 		return title;
@@ -47,10 +48,18 @@ public class FeedMessage {
 	public void setGuid(String guid) {
 		this.guid = guid;
 	}
+	
+	public String getPubDate() {
+		return pubDate;
+	}
+	
+	public void setPubDate(String pubDate) {
+		this.pubDate = pubDate;
+	} 
 
 	@Override
 	public String toString() {
-		return "FeedMessage [title=" + title + ", description=" + description + ", link=" + link + ", author=" + author
+		return "FeedMessage [pubDate " + pubDate + "title=" + title + ", description=" + description + ", link=" + link + ", author=" + author
 				+ ", guid=" + guid + "]";
 	}
 
