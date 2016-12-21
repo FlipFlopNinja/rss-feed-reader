@@ -14,8 +14,8 @@ public class Feed {
 	final String language;
 	final String copyright;
 	final String pubDate;
-	private int buttonIndex;
-	private int tabIndex;
+	private Boolean isOpened = false;
+	private Boolean isMenuItem = false;
 
 	final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
@@ -26,8 +26,6 @@ public class Feed {
 		this.language = language;
 		this.copyright = copyright;
 		this.pubDate = pubDate;
-		this.buttonIndex = Integer.MAX_VALUE;
-		this.tabIndex = Integer.MAX_VALUE;
 	}
 
 	public List<FeedMessage> getMessages() {
@@ -58,26 +56,30 @@ public class Feed {
 		return pubDate;
 	}
 	
-	public int getButtonIndex() {
-		return this.buttonIndex;
+	public Boolean getIsOpened() {
+		return this.isOpened;
 	}
 	
-	public void setButtonIndex(int buttonIndex) {
-		this.buttonIndex = buttonIndex;
-	} 
-	
-	public int getTabIndex() {
-		return this.tabIndex;
+	public Boolean getIsMenuItem() {
+		return this.isMenuItem;
 	}
 	
-	public void setTabIndex(int tabIndex) {
-		this.tabIndex = tabIndex;
+	public void setIsOpened(Boolean isOpened) {
+		this.isOpened = isOpened;
+	}
+	
+	public void setIsMenuItem(Boolean isMenuItem) {
+		this.isMenuItem = isMenuItem;
 	}
 
 	@Override
 	public String toString() {
 		return "Feed [copyright=" + copyright + ", description=" + description + ", language=" + language + ", link="
 				+ link + ", pubDate=" + pubDate + ", title=" + title + "]";
+	}
+	
+	public boolean isOutdated(String pubDate) {
+		return (this.pubDate.equals(pubDate) ? false : true);
 	}
 
 }

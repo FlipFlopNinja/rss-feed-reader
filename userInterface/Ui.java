@@ -1,147 +1,111 @@
 package userInterface;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
-
-import org.swingplus.JHyperlink;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import dataIO.URIList;
-import rSS.*;
+import rSS.Feed;
+import rSS.RSSFeedList;
 
 @SuppressWarnings("serial")
 public class Ui extends JFrame {
 
-	private JTabbedPane tabbedPane = new JTabbedPane();
-	private JPanel overviewTab = new JPanel();
-
+	JMenuBar menuBar = new JMenuBar();
+	JMenu feeds = new JMenu("Feeds");
+	JMenu addFeeds = new JMenu("Add feeds...");
+	JMenu about = new JMenu("About");
+	
+	RSSFeedList myFeedList = new RSSFeedList();
+	
 	public Ui() {
 
-		// default settings for the new JFrame
-		this.setTitle("RSS News Feed Reader");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(new Dimension(750, 600));
+		JMenuItem mI_feeds_nofeeds = new JMenuItem("No feeds present...");
+		JMenuItem mI_addFeeds_addFeed = new JMenuItem("Add feed...");
+		JMenuItem mI_addFeeds_addFeedList = new JMenuItem("Add feed list...");
 
-		// add the tabbedPane including the overviewTab
-		this.overviewTab.setLayout(new GridLayout(0, 3));
-		this.tabbedPane.addTab("Overview", this.overviewTab);
-		this.add(this.tabbedPane);
-		
-		// TODO: make the start option editable with settings.
-		// create RSSFeedList
-		RSSFeedList rssFeedList = new RSSFeedList("feedlist.txt");
+		menuBar.add(feeds, 0);
+		menuBar.add(addFeeds, 1);
+		menuBar.add(about, 2);
 
-		// 
-		AddFileChooser(rssFeedList);
-		AddNewFeedTextboxAndButton(rssFeedList);
-		AddFeedButtons(rssFeedList);
+		feeds.add(mI_feeds_nofeeds, 0);
+		addFeeds.add(mI_addFeeds_addFeed);
+		addFeeds.add(mI_addFeeds_addFeedList);
 
-		// draw UI
-		this.setVisible(true);
-		refresh();
-	}
+		mI_addFeeds_addFeed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String url = (String) JOptionPane.showInputDialog(null, "Enter a valid URL: ", "Add feed...",
+							JOptionPane.PLAIN_MESSAGE, null, null, null);
+					myFeedList.addFeed(url);
+					addFeedMenuItem(myFeedList.getFeed(url));
+					removePlaceHolder(mI_feeds_nofeeds);
+				} catch (Exception exception) {
+				}
+			}
+		});
 
-	// validate and repaint UI
-	public void refresh() {
-		this.validate();
-		this.repaint();
-	}
-
-	public static void main(String[] args) {
-		@SuppressWarnings("unused")
-		Ui rssFeedUI = new Ui();
-	}
-	// METHOD: add the FileChooser button to overview; the chosen file populates rssFeedList
-	private void AddFileChooser(RSSFeedList rssFeedList) {
-		JButton addFileButton = new JButton("Add RSS feed list");
-		addFileButton.setToolTipText("Add a file which contains RSS feed URIs");
-		addFileButton.addActionListener(new ActionListener() {
+		mI_addFeeds_addFeedList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				int rv = chooser.showOpenDialog(null);
 				if (rv == JFileChooser.APPROVE_OPTION) {
 					try {
-						rssFeedList.addFeedList(new URIList(chooser.getSelectedFile()).getURIList());
-						AddFeedButtons(rssFeedList);
-						refresh();
+						myFeedList.addFeedList(new URIList(chooser.getSelectedFile()).getURIList());
+						addFeedMenuItems(myFeedList);
+					} catch (Exception exception) {
+						JOptionPane.showMessageDialog(null, "Please provide a valid .txt-file with RSS feed links!",
+								"Error", JOptionPane.ERROR_MESSAGE);
 					}
-					catch (Exception exception) {
-						JOptionPane.showMessageDialog(null, "Please provide a valid .txt-file with RSS feed links!", "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
-					
+
 				}
+				removePlaceHolder(mI_feeds_nofeeds);
 			}
 		});
-		this.overviewTab.add(addFileButton);
+
+		this.setJMenuBar(menuBar);
+
+		this.setTitle("RSS News Feed Reader");
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.setVisible(true);
+		refresh();
 	}
 
-	// METHOD: add a button for each feed in rssFeedList
-	private void AddFeedButtons(RSSFeedList rssFeedList) {
+	public void refresh() {
+		this.validate();
+		this.pack();
+		this.repaint();
+	}
 
-		int panelcount = this.overviewTab.getComponentCount();
-		JTabbedPane pane = this.tabbedPane;
+	private void addFeedMenuItems(RSSFeedList rssFeedList) {
 		rssFeedList.forEach((string, feed) -> {
-			if (feed.getButtonIndex() == Integer.MAX_VALUE) {
-				feed.setButtonIndex(panelcount);
-				this.overviewTab.add(new JButton(feed.getTitle()), panelcount);
-				((JButton) this.overviewTab.getComponent(panelcount)).setText(feed.getTitle());
-				((JButton) this.overviewTab.getComponent(panelcount)).setToolTipText(feed.getDescription());
-				((JButton) this.overviewTab.getComponent(panelcount)).addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						// TODO: implement correct tabindex handling
-						if (feed.getTabIndex() == Integer.MAX_VALUE) {
-							pane.add(feed.getTitle(), addRssFeedTab(feed));
-							feed.setTabIndex(panelcount);
-						}
-					}
-				});
-			}
+			addFeedMenuItem(feed);
 		});
 	}
 
-	// AddNewFeedTextboxAndButton
-	public void AddNewFeedTextboxAndButton(RSSFeedList rssFeedList) {
-		JTextField inputUri = new JTextField(10);
-		inputUri.setToolTipText("Enter RSS Feed URI");
-		this.overviewTab.add(inputUri);
-		JButton inputUriButton = new JButton("add Feed");
-		inputUriButton.setToolTipText("Add the provided RSS Feed");
-		inputUriButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					rssFeedList.addFeed(inputUri.getText());
-					inputUri.setText("");
-					AddFeedButtons(rssFeedList);
-					refresh();
-				} catch (Exception exception) {
-					JOptionPane.showMessageDialog(null, "Please enter a valid URI", "Input Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+	private void addFeedMenuItem(Feed feed) {
+		if (!feed.getIsMenuItem()) {
+			feeds.add(new FeedMenuItem(feed));
+			feed.setIsMenuItem(true);
+		}
+	}
+	
+	private void removePlaceHolder(JMenuItem MenuItem) {
+		if (myFeedList.size() > 0) {
+			if (MenuItem.getParent() != null) {
+				feeds.remove(MenuItem);
 			}
-		});
-		this.overviewTab.add(inputUriButton);
+		}
 	}
 
-	// create the rss feed Tab
-	public JPanel addRssFeedTab(Feed feed) {
-		// create feed, panel and hashmap
-		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 8));
-		// tempPanel.setName(feed.getTitle());
-		// create msg-list
-		List<FeedMessage> feedmessages = feed.getMessages();
-		// create hyperlinks, caption is the title and the feedmessage link is
-		// hyperlink
-		feedmessages.forEach((message) -> {
-			try {
-				tempPanel.add(new JHyperlink(message.getTitle(), message.getLink()));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		return tempPanel;
+	public static void main(String[] args) {
+		Ui myUi = new Ui();
 	}
-
 }

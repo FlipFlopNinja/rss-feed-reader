@@ -31,16 +31,16 @@ public class RSSFeedList extends HashMap<String, Feed> {
 		return this;
 	}
 	
-	public Feed getFeed(String uri) {
-		return this.get(uri);
+	public Feed getFeed(String url) {
+		return this.get(url);
 	}
 
 	// methods
-	public void addFeed(String uri) {
-		if (!this.containsKey(uri)) {
-			RSSFeedParser parser = new RSSFeedParser(uri);
+	public void addFeed(String url) {
+		if (!this.containsKey(url)) {
+			RSSFeedParser parser = new RSSFeedParser(url);
 			Feed tempFeed = parser.readFeed();
-			this.put(uri, tempFeed);
+			this.put(url, tempFeed);
 		}
 	}
 
