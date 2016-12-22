@@ -3,7 +3,7 @@ package rSS;
 import java.util.HashMap;
 import java.util.List;
 
-import dataIO.URIList;
+import dataIO.URLList;
 
 @SuppressWarnings("serial")
 public class RSSFeedList extends HashMap<String, Feed> {
@@ -11,18 +11,18 @@ public class RSSFeedList extends HashMap<String, Feed> {
 	// constructors
 	public RSSFeedList() {}
 	
-	public RSSFeedList(List<String> uriList) {
-		uriList.forEach((uri) -> {
-			RSSFeedParser parser = new RSSFeedParser(uri.toString());
+	public RSSFeedList(List<String> urlList) {
+		urlList.forEach((url) -> {
+			RSSFeedParser parser = new RSSFeedParser(url.toString());
 			Feed tempFeed = parser.readFeed();
-			this.put(uri, tempFeed);
+			this.put(url, tempFeed);
 		});
 	}
 	
 	public RSSFeedList(String fileName) {
-		URIList uriList = new URIList(fileName);
-		uriList.getURIList().forEach((uri) -> {
-			this.addFeed(uri);
+		URLList urlList = new URLList(fileName);
+		urlList.getURLList().forEach((url) -> {
+			this.addFeed(url);
 		});
 	}
 
@@ -44,12 +44,12 @@ public class RSSFeedList extends HashMap<String, Feed> {
 		}
 	}
 
-	public void addFeedList(List<String> uriList) {
-		uriList.forEach((uri) -> {
-			if (!this.containsKey(uri)) {
-				RSSFeedParser parser = new RSSFeedParser(uri);
+	public void addFeedList(List<String> urlList) {
+		urlList.forEach((url) -> {
+			if (!this.containsKey(url)) {
+				RSSFeedParser parser = new RSSFeedParser(url);
 				Feed tempFeed = parser.readFeed();
-				this.put(uri, tempFeed);
+				this.put(url, tempFeed);
 			}
 		});
 	}

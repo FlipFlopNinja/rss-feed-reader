@@ -10,7 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import dataIO.URIList;
+import dataIO.URLList;
 import rSS.Feed;
 import rSS.RSSFeedList;
 import tasks.FeedTimer;
@@ -59,7 +59,7 @@ public class Ui extends JFrame {
 				int rv = chooser.showOpenDialog(null);
 				if (rv == JFileChooser.APPROVE_OPTION) {
 					try {
-						myFeedList.addFeedList(new URIList(chooser.getSelectedFile()).getURIList());
+						myFeedList.addFeedList(new URLList(chooser.getSelectedFile()).getURLList());
 						addFeedMenuItems(myFeedList);
 					} catch (Exception exception) {
 						JOptionPane.showMessageDialog(null, "Please provide a valid .txt-file with RSS feed links!",
