@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import dataIO.URIList;
 import rSS.Feed;
 import rSS.RSSFeedList;
+import tasks.FeedTimer;
 
 @SuppressWarnings("serial")
 public class Ui extends JFrame {
@@ -25,6 +26,7 @@ public class Ui extends JFrame {
 	RSSFeedList myFeedList = new RSSFeedList();
 	
 	public Ui() {
+		FeedTimer feedTimer = new FeedTimer(myFeedList);
 
 		JMenuItem mI_feeds_nofeeds = new JMenuItem("No feeds present...");
 		JMenuItem mI_addFeeds_addFeed = new JMenuItem("Add feed...");

@@ -14,18 +14,20 @@ public class Feed {
 	final String language;
 	final String copyright;
 	final String pubDate;
+	final String source;
 	private Boolean isOpened = false;
 	private Boolean isMenuItem = false;
 
 	final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
-	public Feed(String title, String link, String description, String language, String copyright, String pubDate) {
+	public Feed(String title, String link, String description, String language, String copyright, String pubDate, String source) {
 		this.title = title;
 		this.link = link;
 		this.description = description;
 		this.language = language;
 		this.copyright = copyright;
 		this.pubDate = pubDate;
+		this.source = source;
 	}
 
 	public List<FeedMessage> getMessages() {
@@ -54,6 +56,10 @@ public class Feed {
 
 	public String getPubDate() {
 		return pubDate;
+	}
+	
+	public String getSource() {
+		return source;
 	}
 	
 	public Boolean getIsOpened() {

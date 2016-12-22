@@ -66,7 +66,7 @@ public class RSSFeedParser {
 					case ITEM:
 						if (isFeedHeader) {
 							isFeedHeader = false;
-							feed = new Feed(title, link, description, language, copyright, lastBuildDate);
+							feed = new Feed(title, link, description, language, copyright, lastBuildDate, url.toString());
 						}
 						event = eventReader.nextEvent();
 						break;
@@ -113,6 +113,7 @@ public class RSSFeedParser {
 					}
 				}
 			}
+			eventReader.close();
 		} catch (XMLStreamException e) {
 			throw new RuntimeException(e);
 		}
@@ -130,6 +131,7 @@ public class RSSFeedParser {
 
 	private InputStream read() {
 		try {
+			System.out.println(url);
 			return url.openStream();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
