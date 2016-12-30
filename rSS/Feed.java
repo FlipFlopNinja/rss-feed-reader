@@ -3,6 +3,9 @@ package rSS;
 import java.util.ArrayList;
 import java.util.List;
 
+import userInterface.FeedFrame;
+import userInterface.FeedMenuItem;
+
 /*
  * Stores an RSS feed
  */
@@ -15,8 +18,8 @@ public class Feed {
 	final String copyright;
 	final String pubDate;
 	final String source;
-	private Boolean isOpened = false;
-	private Boolean isMenuItem = false;
+	private FeedFrame frame;
+	private FeedMenuItem menuItem;
 
 	final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
@@ -62,20 +65,20 @@ public class Feed {
 		return source;
 	}
 	
-	public Boolean getIsOpened() {
-		return this.isOpened;
+	public FeedFrame getFrame() {
+		return this.frame;
 	}
 	
-	public Boolean getIsMenuItem() {
-		return this.isMenuItem;
+	public FeedMenuItem getMenuItem() {
+		return this.menuItem;
 	}
 	
-	public void setIsOpened(Boolean isOpened) {
-		this.isOpened = isOpened;
+	public void setFrame(FeedFrame frame) {
+		this.frame = frame;
 	}
 	
-	public void setIsMenuItem(Boolean isMenuItem) {
-		this.isMenuItem = isMenuItem;
+	public void setMenuItem(FeedMenuItem menuItem) {
+		this.menuItem = menuItem;
 	}
 
 	@Override

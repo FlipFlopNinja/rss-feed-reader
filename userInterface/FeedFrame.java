@@ -38,7 +38,7 @@ public class FeedFrame extends JFrame{
 
 		    @Override
 		    public void windowClosing(WindowEvent e) {
-		        feed.setIsOpened(false);
+		    	feed.setFrame(null);
 		    }
 		    @Override
 		    public void windowClosed(WindowEvent e) {}

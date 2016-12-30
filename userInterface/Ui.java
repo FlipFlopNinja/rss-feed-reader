@@ -72,7 +72,6 @@ public class Ui extends JFrame {
 		});
 
 		this.setJMenuBar(menuBar);
-
 		this.setTitle("RSS News Feed Reader");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -93,9 +92,10 @@ public class Ui extends JFrame {
 	}
 
 	private void addFeedMenuItem(Feed feed) {
-		if (!feed.getIsMenuItem()) {
-			feeds.add(new FeedMenuItem(feed));
-			feed.setIsMenuItem(true);
+		if (feed.getMenuItem() == null) {
+			FeedMenuItem tempItem = new FeedMenuItem(feed);
+			feed.setMenuItem(tempItem);
+			feeds.add(tempItem);
 		}
 	}
 	

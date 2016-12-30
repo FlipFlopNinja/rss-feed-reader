@@ -7,7 +7,7 @@ import dataIO.URLList;
 
 @SuppressWarnings("serial")
 public class RSSFeedList extends HashMap<String, Feed> {
-
+	
 	// constructors
 	public RSSFeedList() {}
 	

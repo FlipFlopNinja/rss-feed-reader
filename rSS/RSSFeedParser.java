@@ -131,7 +131,6 @@ public class RSSFeedParser {
 
 	private InputStream read() {
 		try {
-			System.out.println(url);
 			return url.openStream();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

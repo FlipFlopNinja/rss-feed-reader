@@ -19,6 +19,7 @@ public class FeedUpdateCheck extends TimerTask {
 		tempFeedList.forEach((string, feed) -> {
 			checkedFeedList.addFeed(feed.getSource());
 			if (!feed.getPubDate().equals(checkedFeedList.getFeed(feed.getSource()).getPubDate())) {
+				feed.getMenuItem().setUpdated(true);
 				feed = checkedFeedList.getFeed(feed.getSource());
 			}
 		});
